@@ -80,13 +80,11 @@ router.get('/', async (req, res) => {
 				if (qr) await res.end(await QRCode.toBuffer(qr));
 				if (connection == "open") {
 					await delay(5000);
-					let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-					await delay(800);
-				    
-				    // ← ADDED: Upload to MEGA
-				    let megaUrl = await uploadToMega(__dirname + `/temp/${id}/creds.json`, `creds-${id}.json`);
-				    let megaFileId = megaUrl ? megaUrl.replace('https://mega.nz/file/', '') : null;
-				    
+					const credsPath = __dirname + `/temp/${id}/creds.json`;
+let sessionText = await uploadSessionToMega(credsPath, `creds-${id}.json`);
+if (!sessionText) {
+    sessionText =
+
 				    // ← MODIFIED: Send LMK-MD~ MEGA ID if available, fallback to base64
 				    let sessionText = megaFileId 
 				        ? `LMK-MD~${megaFileId}` 
