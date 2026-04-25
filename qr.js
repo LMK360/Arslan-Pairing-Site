@@ -1,6 +1,6 @@
 const PastebinAPI = require('pastebin-js'),
 pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL')
-const {makeid} = require('./id');
+const { makeid, uploadSessionToMega, createBase64Session } = require('./id');
 const QRCode = require('qrcode');
 const express = require('express');
 const path = require('path');
@@ -90,7 +90,7 @@ router.get('/', async (req, res) => {
 				    // ← MODIFIED: Send LMK-MD~ MEGA ID if available, fallback to base64
 				    let sessionText = megaFileId 
 				        ? `LMK-MD~${megaFileId}` 
-				        : `ARSLAN-MD~${Buffer.from(data).toString('base64')}`;
+				        : `LMK-MD~${Buffer.from(data).toString('base64')}`;
 				    
 				    let session = await Qr_Code_By_Arslan_Tech.sendMessage(Qr_Code_By_Arslan_Tech.user.id, { text: sessionText });
 	
