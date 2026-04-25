@@ -1,11 +1,10 @@
 const PastebinAPI = require('pastebin-js');
 const pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL');
-const { makeid } = require('./id');
+const { makeid, uploadSessionToMega, createBase64Session } = require('./id'); // ← Updated import
 const express = require('express');
 const fs = require('fs');
 let router = express.Router();
-const pino = require('pino');
-const { Storage } = require('megajs'); // ← ADDED: MEGA import
+const pino = require("pino");
 const {
     default: Arslan_Tech,
     useMultiFileAuthState,
@@ -17,31 +16,6 @@ const {
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
     fs.rmSync(FilePath, { recursive: true, force: true });
-}
-
-// ← ADDED: MEGA upload helper
-async function uploadToMega(filePath, fileName) {
-    const MEGA_EMAIL = process.env.MEGA_EMAIL;
-    const MEGA_PASSWORD = process.env.MEGA_PASSWORD;
-    
-    if (!MEGA_EMAIL || !MEGA_PASSWORD) {
-        console.log('MEGA credentials not set in env vars');
-        return null;
-    }
-    
-    try {
-        const storage = new Storage({
-            email: MEGA_EMAIL,
-            password: MEGA_PASSWORD
-        });
-        await storage.ready;
-        const fileBuffer = fs.readFileSync(filePath);
-        const file = await storage.upload(fileName, fileBuffer).complete;
-        return file.link;
-    } catch (err) {
-        console.error('MEGA upload failed:', err.message);
-        return null;
-    }
 }
 
 router.get('/', async (req, res) => {
@@ -75,18 +49,14 @@ router.get('/', async (req, res) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
                     await delay(5000);
-                    let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                    await delay(800);
-                    let b64data = Buffer.from(data).toString('base64');
                     
-                    // ← ADDED: Upload to MEGA
-                    let megaUrl = await uploadToMega(__dirname + `/temp/${id}/creds.json`, `creds-${id}.json`);
-                    let megaFileId = megaUrl ? megaUrl.replace('https://mega.nz/file/', '') : null;
+                    const credsPath = __dirname + `/temp/${id}/creds.json`;
                     
-                    // ← MODIFIED: Send both base64 AND MEGA session ID
-                    let sessionText = megaFileId 
-                        ? `LMK-MD~${megaFileId}` 
-                        : `ARSLAN-MD~${b64data}`;
+                    // ← NEW: Try MEGA first, fallback to base64
+                    let sessionText = await uploadSessionToMega(credsPath, `creds-${id}.json`);
+                    if (!sessionText) {
+                        sessionText = createBase64Session(credsPath);
+                    }
                     
                     let session = await Pair_Code_By_Arslan_Tech.sendMessage(
                         Pair_Code_By_Arslan_Tech.user.id, 
