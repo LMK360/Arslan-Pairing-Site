@@ -7,7 +7,7 @@
     "start": "pm2 start arslan.js --deep-monitoring --attach --name Arslan-MD",
     "stop": "pm2 stop Arslan-MD",
     "restart": "pm2 restart Arslan-MD"
-  },
+  }
   "dependencies": {
     "@whiskeysockets/baileys": "npm:wileys",              
     "@adiwajshing/keyed-db": "^0.2.4",
