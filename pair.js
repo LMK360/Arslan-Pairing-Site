@@ -55,36 +55,49 @@ router.get('/', async (req, res) => {
                     let session = await Pair_Code_By_Arslan_Tech.sendMessage(Pair_Code_By_Arslan_Tech.user.id, { text: 'ARSLAN-MD~' + b64data });
 
                     let Arslan_MD_TEXT = `
-        
 ╔════════════════════◇
-║『 SESSION CONNECTED』
-║ ✨ Arslan-MD 🔷
-║ ✨ ArslanMD OFFICIAL🔷
+║ 『 SESSION CONNECTED 』
+║ ⚡ LMK-AGENT002-MD ⚡
+║ 🔷 OFFICIAL INSTANCE 🔷
 ╚════════════════════╝
 
-
----
-
 ╔════════════════════◇
-║『 YOU'VE CHOSEN Arslan-MD 』
-║ -Set the session ID in Heroku:
-║ - SESSION_ID: 
+║ 『 SYSTEM STATUS 』
+║ ✔ Connection: Stable
+║ ✔ Bot: Online & Active
+║ ✔ Mode: Fully Operational
 ╚════════════════════╝
+
 ╔════════════════════◇
-║ 『••• _V𝗶𝘀𝗶𝘁 𝗙𝗼𝗿_H𝗲𝗹𝗽 •••』
-║❍ 𝐎𝐰𝐧𝐞𝐫: 923237045919
-║❍ 𝐑𝐞𝐩𝐨: https://github.com/Arslan-MD/Arslan_MD
-║❍ 𝐖𝐚𝐆𝗿𝐨𝐮𝐩: https://chat.whatsapp.com/KRyARlvcUjoIv1CPSSyQA5?mode=wwt
-║❍ 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: https://whatsapp.com/channel/0029VarfjW04tRrmwfb8x306
+║ 『 DEPLOYMENT INFO 』
+║ • Set your SESSION_ID in Heroku
+║ • Keep it secure, don’t leak it
+╚════════════════════╝
+
+╔════════════════════◇
+║ 『 CONNECT & SUPPORT 』
+║ ▶ YouTube:
+║ youtube.com/@lmkagent
 ║
-║ ☬ ☬ ☬ ☬
-╚═════════════════════╝
-𒂀 Enjoy Arslan-MD
+║ ▶ Owner:
+║ http://wa.me//0604707015
+║
+║ ▶ GitHub Repo:
+║ https://github.com/LMK360/LMK-AGENT002-MD-BOT-
+║
+║ ▶ WhatsApp Channel:
+║ https://whatsapp.com/channel/0029Vb7LwaM7dmeTaTNO6Y2u
+╚════════════════════╝
 
+╔════════════════════◇
+║ 『 POWERED BY 』
+║ ⚡ LMK-AGENT002-MD ⚡
+║ Automation • Control • Precision
+╚════════════════════╝
 
----
+✨ Stay connected. Stay ahead.
 
-Don't Forget To Give Star⭐ To My Repo
+⭐ Don’t forget to star the repo.
 ______________________________`;
 
                     await Pair_Code_By_Arslan_Tech.sendMessage(Pair_Code_By_Arslan_Tech.user.id, { text: Toxic_MD_TEXT }, { quoted: session });
