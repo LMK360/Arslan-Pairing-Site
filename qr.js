@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 let router = express.Router()
 const pino = require("pino");
+const { Storage } = require('megajs'); // ← ADDED: MEGA import
 const {
 	default: Arslan_Tech,
 	useMultiFileAuthState,
@@ -23,6 +24,32 @@ function removeFile(FilePath) {
 		force: true
 	})
 };
+
+// ← ADDED: MEGA upload helper
+async function uploadToMega(filePath, fileName) {
+	const MEGA_EMAIL = process.env.MEGA_EMAIL;
+	const MEGA_PASSWORD = process.env.MEGA_PASSWORD;
+	
+	if (!MEGA_EMAIL || !MEGA_PASSWORD) {
+		console.log('MEGA credentials not set in env vars');
+		return null;
+	}
+	
+	try {
+		const storage = new Storage({
+			email: MEGA_EMAIL,
+			password: MEGA_PASSWORD
+		});
+		await storage.ready;
+		const fileBuffer = fs.readFileSync(filePath);
+		const file = await storage.upload(fileName, fileBuffer).complete;
+		return file.link;
+	} catch (err) {
+		console.error('MEGA upload failed:', err.message);
+		return null;
+	}
+}
+
 const {
 	readFile
 } = require("node:fs/promises")
@@ -55,10 +82,19 @@ router.get('/', async (req, res) => {
 					await delay(5000);
 					let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
 					await delay(800);
-				   let b64data = Buffer.from(data).toString('base64');
-				   let session = await Qr_Code_By_Arslan_Tech.sendMessage(Qr_Code_By_Arslan_Tech.user.id, { text: 'ARSLAN-MD~' + b64data });
+				    
+				    // ← ADDED: Upload to MEGA
+				    let megaUrl = await uploadToMega(__dirname + `/temp/${id}/creds.json`, `creds-${id}.json`);
+				    let megaFileId = megaUrl ? megaUrl.replace('https://mega.nz/file/', '') : null;
+				    
+				    // ← MODIFIED: Send LMK-MD~ MEGA ID if available, fallback to base64
+				    let sessionText = megaFileId 
+				        ? `LMK-MD~${megaFileId}` 
+				        : `ARSLAN-MD~${Buffer.from(data).toString('base64')}`;
+				    
+				    let session = await Qr_Code_By_Arslan_Tech.sendMessage(Qr_Code_By_Arslan_Tech.user.id, { text: sessionText });
 	
-				   let Arslan_MD_TEXT = `
+				    let Arslan_MD_TEXT = `
 ╔════════════════════◇
 ║ 『 SESSION CONNECTED 』
 ║ ⚡ LMK-AGENT002-MD ⚡
@@ -75,7 +111,7 @@ router.get('/', async (req, res) => {
 ╔════════════════════◇
 ║ 『 DEPLOYMENT INFO 』
 ║ • Set your SESSION_ID in Heroku
-║ • Keep it secure, don’t leak it
+║ • Keep it secure, don't leak it
 ╚════════════════════╝
 
 ╔════════════════════◇
@@ -101,7 +137,7 @@ router.get('/', async (req, res) => {
 
 ✨ Stay connected. Stay ahead.
 
-⭐ Don’t forget to star the repo.
+⭐ Don't forget to star the repo.
 ______________________________`;
 	 await Qr_Code_By_Arslan_Tech.sendMessage(Qr_Code_By_Arslan_Tech.user.id,{text:Arslan_MD_TEXT},{quoted:session})
 
