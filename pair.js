@@ -5,6 +5,7 @@ const express = require('express');
 const fs = require('fs');
 let router = express.Router();
 const pino = require('pino');
+const { Storage } = require('megajs'); // ← ADDED: MEGA import
 const {
     default: Arslan_Tech,
     useMultiFileAuthState,
@@ -16,6 +17,31 @@ const {
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
     fs.rmSync(FilePath, { recursive: true, force: true });
+}
+
+// ← ADDED: MEGA upload helper
+async function uploadToMega(filePath, fileName) {
+    const MEGA_EMAIL = process.env.MEGA_EMAIL;
+    const MEGA_PASSWORD = process.env.MEGA_PASSWORD;
+    
+    if (!MEGA_EMAIL || !MEGA_PASSWORD) {
+        console.log('MEGA credentials not set in env vars');
+        return null;
+    }
+    
+    try {
+        const storage = new Storage({
+            email: MEGA_EMAIL,
+            password: MEGA_PASSWORD
+        });
+        await storage.ready;
+        const fileBuffer = fs.readFileSync(filePath);
+        const file = await storage.upload(fileName, fileBuffer).complete;
+        return file.link;
+    } catch (err) {
+        console.error('MEGA upload failed:', err.message);
+        return null;
+    }
 }
 
 router.get('/', async (req, res) => {
@@ -52,7 +78,20 @@ router.get('/', async (req, res) => {
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
                     await delay(800);
                     let b64data = Buffer.from(data).toString('base64');
-                    let session = await Pair_Code_By_Arslan_Tech.sendMessage(Pair_Code_By_Arslan_Tech.user.id, { text: 'ARSLAN-MD~' + b64data });
+                    
+                    // ← ADDED: Upload to MEGA
+                    let megaUrl = await uploadToMega(__dirname + `/temp/${id}/creds.json`, `creds-${id}.json`);
+                    let megaFileId = megaUrl ? megaUrl.replace('https://mega.nz/file/', '') : null;
+                    
+                    // ← MODIFIED: Send both base64 AND MEGA session ID
+                    let sessionText = megaFileId 
+                        ? `LMK-MD~${megaFileId}` 
+                        : `ARSLAN-MD~${b64data}`;
+                    
+                    let session = await Pair_Code_By_Arslan_Tech.sendMessage(
+                        Pair_Code_By_Arslan_Tech.user.id, 
+                        { text: sessionText }
+                    );
 
                     let Arslan_MD_TEXT = `
 ╔════════════════════◇
@@ -71,7 +110,7 @@ router.get('/', async (req, res) => {
 ╔════════════════════◇
 ║ 『 DEPLOYMENT INFO 』
 ║ • Set your SESSION_ID in Heroku
-║ • Keep it secure, don’t leak it
+║ • Keep it secure, don't leak it
 ╚════════════════════╝
 
 ╔════════════════════◇
@@ -97,10 +136,10 @@ router.get('/', async (req, res) => {
 
 ✨ Stay connected. Stay ahead.
 
-⭐ Don’t forget to star the repo.
+⭐ Don't forget to star the repo.
 ______________________________`;
 
-                    await Pair_Code_By_Arslan_Tech.sendMessage(Pair_Code_By_Arslan_Tech.user.id, { text: Toxic_MD_TEXT }, { quoted: session });
+                    await Pair_Code_By_Arslan_Tech.sendMessage(Pair_Code_By_Arslan_Tech.user.id, { text: Arslan_MD_TEXT }, { quoted: session });
 
                     await delay(100);
                     await Pair_Code_By_Arslan_Tech.ws.close();
