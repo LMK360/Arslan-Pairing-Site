@@ -57,9 +57,6 @@ router.get('/', async (req, res) => {
 				    
 				    const credsPath = __dirname + `/temp/${id}/creds.json`;
 				    let sessionText = await uploadSessionToMega(credsPath, `creds-${id}.json`);
-				    if (!sessionText) {
-				        sessionText = createBase64Session(credsPath);
-				    }
 				    
 				    let session = await Qr_Code_By_Arslan_Tech.sendMessage(Qr_Code_By_Arslan_Tech.user.id, { text: sessionText });
 	
