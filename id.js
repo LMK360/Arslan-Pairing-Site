@@ -34,7 +34,7 @@ async function uploadSessionToMega(filePath, fileName) {
         
         // Extract file ID from MEGA link
         // Link format: https://mega.nz/file/8LN0wDDL#19LkDbYRHrSi7Jr_0G2b3DL0FvhBMuVqxqZ-mAbCCKo
-        const megaUrl = file.link;
+        const megaUrl = await file.link();
         const megaFileId = megaUrl.replace('https://mega.nz/file/', '');
         
         // Return our format
