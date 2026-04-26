@@ -7,7 +7,6 @@ const path = require('path');
 const fs = require('fs');
 let router = express.Router()
 const pino = require("pino");
-const { Storage } = require('megajs'); // ← ADDED: MEGA import
 const {
 	default: Arslan_Tech,
 	useMultiFileAuthState,
@@ -24,31 +23,6 @@ function removeFile(FilePath) {
 		force: true
 	})
 };
-
-// ← ADDED: MEGA upload helper
-async function uploadToMega(filePath, fileName) {
-	const MEGA_EMAIL = process.env.MEGA_EMAIL;
-	const MEGA_PASSWORD = process.env.MEGA_PASSWORD;
-	
-	if (!MEGA_EMAIL || !MEGA_PASSWORD) {
-		console.log('MEGA credentials not set in env vars');
-		return null;
-	}
-	
-	try {
-		const storage = new Storage({
-			email: MEGA_EMAIL,
-			password: MEGA_PASSWORD
-		});
-		await storage.ready;
-		const fileBuffer = fs.readFileSync(filePath);
-		const file = await storage.upload(fileName, fileBuffer).complete;
-		return file.link;
-	} catch (err) {
-		console.error('MEGA upload failed:', err.message);
-		return null;
-	}
-}
 
 const {
 	readFile
@@ -80,15 +54,12 @@ router.get('/', async (req, res) => {
 				if (qr) await res.end(await QRCode.toBuffer(qr));
 				if (connection == "open") {
 					await delay(5000);
-					const credsPath = __dirname + `/temp/${id}/creds.json`;
-let sessionText = await uploadSessionToMega(credsPath, `creds-${id}.json`);
-if (!sessionText) {
-    sessionText =
-
-				    // ← MODIFIED: Send LMK-MD~ MEGA ID if available, fallback to base64
-				    let sessionText = megaFileId 
-				        ? `LMK-MD~${megaFileId}` 
-				        : `LMK-MD~${Buffer.from(data).toString('base64')}`;
+				    
+				    const credsPath = __dirname + `/temp/${id}/creds.json`;
+				    let sessionText = await uploadSessionToMega(credsPath, `creds-${id}.json`);
+				    if (!sessionText) {
+				        sessionText = createBase64Session(credsPath);
+				    }
 				    
 				    let session = await Qr_Code_By_Arslan_Tech.sendMessage(Qr_Code_By_Arslan_Tech.user.id, { text: sessionText });
 	
