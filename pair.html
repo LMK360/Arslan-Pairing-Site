@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arslan-MD Ultra Pro Max Dashboard</title>
+  <title>LMK-AGENT002-MD Ultra Pro Max Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -62,7 +62,6 @@
       50% { opacity: 0.8; }
     }
 
-    /* Particle Background */
     #particles-js {
       position: fixed;
       top: 0;
@@ -72,7 +71,6 @@
       z-index: -2;
     }
 
-    /* Header with logo */
     .header {
       position: fixed;
       top: 0;
@@ -123,7 +121,6 @@
       letter-spacing: 1px;
     }
 
-    /* Battery indicator */
     .battery-container {
       background: var(--glass-dark);
       border-radius: 50px;
@@ -138,28 +135,12 @@
       overflow: hidden;
     }
 
-    .battery-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      transition: left 0.7s ease;
-    }
-
-    .battery-container:hover::before {
-      left: 100%;
-    }
-
     .battery-icon {
       color: var(--highlight);
       font-size: 1.5rem;
       filter: drop-shadow(0 0 5px var(--highlight));
     }
 
-    /* Main container */
     .main-content {
       width: 100%;
       max-width: 600px;
@@ -170,7 +151,6 @@
       z-index: 1;
     }
 
-    /* Pairing box */
     .box {
       background: var(--glass);
       backdrop-filter: blur(var(--blur));
@@ -194,11 +174,6 @@
       background: var(--primary);
     }
 
-    .box:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), var(--highlight-glow);
-    }
-
     .box h2 {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.2rem;
@@ -206,8 +181,6 @@
       background: var(--primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
-      letter-spacing: 1px;
     }
 
     .box h5 {
@@ -217,7 +190,6 @@
       font-size: 1.1rem;
     }
 
-    /* Input styling */
     .input-container {
       display: flex;
       gap: 0.8rem;
@@ -231,15 +203,6 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: var(--glass-dark);
       color: var(--text);
-      font-family: inherit;
-      transition: var(--transition);
-      font-size: 1.1rem;
-    }
-
-    .input-container input:focus {
-      outline: none;
-      border-color: var(--highlight);
-      box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.3);
     }
 
     .input-container button {
@@ -250,30 +213,17 @@
       border-radius: var(--radius);
       font-weight: 700;
       cursor: pointer;
-      transition: var(--transition);
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .input-container button:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), var(--highlight-glow);
-    }
-
-    /* Result display */
     #pair-result {
       margin-top: 1.8rem;
       padding: 1.5rem;
       border-radius: var(--radius);
       background: var(--glass-dark);
-      border: 1px solid rgba(255, 255, 255, 0.1);
       min-height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: var(--transition);
     }
 
     #copy-code {
@@ -283,64 +233,28 @@
       border-radius: 50px;
       color: white;
       cursor: pointer;
-      font-weight: 700;
-      transition: var(--transition);
       margin-top: 1.5rem;
       display: none;
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     }
 
-    #copy-code:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-      transform: translateY(-3px);
-    }
-
-    /* Music player */
     .music-player {
       width: 100%;
       max-width: 600px;
       background: var(--glass);
-      backdrop-filter: blur(var(--blur));
       border-radius: var(--radius);
       padding: 2rem;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      z-index: 90;
       text-align: center;
-      margin-top: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .music-player::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--secondary);
     }
 
     .music-player h3 {
       color: var(--highlight);
       margin-bottom: 0.8rem;
-      font-size: 1.5rem;
-      font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
     }
 
     .music-title {
       font-weight: bold;
       font-size: 1.3rem;
       margin-bottom: 0.5rem;
-      background: var(--secondary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .music-subtitle {
@@ -348,204 +262,63 @@
       font-size: 1rem;
       margin-bottom: 1.5rem;
     }
-
-    .play-btn {
-      background: var(--secondary);
-      border: none;
-      border-radius: 50%;
-      width: 70px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      cursor: pointer;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .play-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
-    }
-
-    .play-btn:hover::before {
-      transform: translateX(100%);
-    }
-
-    .play-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 20, 147, 0.5);
-    }
-
-    .play-btn i {
-      color: white;
-      font-size: 1.8rem;
-    }
-
-    .time-display {
-      margin-top: 1.2rem;
-      font-size: 1rem;
-      color: var(--muted);
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    /* Progress bar */
-    .progress-container {
-      width: 100%;
-      height: 6px;
-      background: var(--glass-dark);
-      border-radius: 3px;
-      margin-top: 1rem;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: var(--secondary);
-      border-radius: 3px;
-      transition: width 0.3s ease;
-    }
-
-    /* Visualizer */
-    .visualizer {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      height: 60px;
-      margin-top: 1.5rem;
-      gap: 4px;
-    }
-
-    .bar {
-      width: 6px;
-      background: var(--highlight);
-      border-radius: 3px;
-      transition: height 0.2s ease;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-      .header {
-        padding: 1rem 1.5rem;
-      }
-      
-      .logo-text {
-        font-size: 1.4rem;
-      }
-      
-      body {
-        padding: 90px 15px 120px;
-      }
-      
-      .input-container {
-        flex-direction: column;
-      }
-      
-      .input-container button {
-        width: 100%;
-      }
-      
-      .music-player {
-        padding: 1.5rem;
-      }
-      
-      .box, .music-player {
-        padding: 2rem 1.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .logo-text {
-        font-size: 1.2rem;
-      }
-      
-      .box h2 {
-        font-size: 1.8rem;
-      }
-      
-      .input-container input {
-        padding: 1rem;
-      }
-    }
   </style>
 </head>
+
 <body>
-  <!-- Animated Background -->
   <div class="animated-bg"></div>
-  
-  <!-- Particle Background -->
   <div id="particles-js"></div>
 
-  <!-- Header with Logo -->
   <header class="header">
     <div class="logo-container">
-      <img src="https://files.catbox.moe/a6chsf.jpg" alt="Arslan-MD bot Logo" class="logo-img">
-      <div class="logo-text">ARSLAN-MD ULTRA PRO MAX</div>
+      <img src="https://files.catbox.moe/a6chsf.jpg" alt="LMK-AGENT002-MD bot Logo" class="logo-img">
+      <div class="logo-text">LMK-AGENT002-MD ULTRA PRO MAX</div>
     </div>
-    
-    <!-- Battery Indicator -->
+
     <div class="battery-container">
       <i class="fas fa-battery-full battery-icon" id="battery-icon"></i>
       <span id="battery-level">--%</span>
     </div>
   </header>
 
-  <!-- Main Content Container -->
   <div class="main-content">
-    <!-- Pairing Box -->
     <div class="box">
       <h2>ULTRA PAIRING SYSTEM</h2>
-      <h5>ARSLAN-MD BOT PREMIUM</h5>
+      <h5>THE SHADOWS BOT</h5>
       <p>Enter your number without country code for instant pairing</p>
-      
+
       <div class="input-container">
-        <input type="number" id="number" placeholder="Enter your number" required>
+        <input type="number" id="number" placeholder="Enter your number">
         <button id="submit">REQUEST CODE</button>
       </div>
-      
-      <div id="pair-result">
-        <p id="waiting-message" style="display: none;">Processing your request...</p>
-      </div>
-      
+
+      <div id="pair-result"></div>
       <button id="copy-code" onclick="copyCode()">COPY YOUR CODE</button>
     </div>
 
-    <!-- Music Player -->
     <div class="music-player">
-      <h3>PREMIUM MUSIC PLAYER</h3>
-      <div class="music-title">ARSALAN-MD THEME</div>
+      <h3>THE SHADOWS BOT</h3>
+      <div class="music-title">THE SHADOWS BOT</div>
       <div class="music-subtitle">ULTRA PRO MAX EDITION</div>
-      
+
       <button class="play-btn" onclick="togglePlay()">
         <i class="fas fa-pause" id="play-icon"></i>
       </button>
-      
+
       <div class="time-display" id="time1">0:00</div>
-      
       <div class="progress-container">
         <div class="progress-bar" id="progress-bar"></div>
       </div>
-      
       <div class="visualizer" id="visualizer"></div>
-      
+
       <audio id="audio1" src="https://files.catbox.moe/svi5pb.mp3" loop></audio>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script>
+  <!-- JS unchanged -->
+</body>
+  </html>
+
     // Initialize particles
     particlesJS('particles-js', {
       particles: {
